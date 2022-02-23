@@ -30,6 +30,7 @@ registerRoute(
   ({ request, url }) => {
     // If this isn't a navigation, skip.
     if (request.mode !== 'navigate') {
+
       return false;
     } // If this is a URL that starts with /_, skip.
 
@@ -60,6 +61,7 @@ registerRoute(
     ],
   })
 );
+//test
 
 // This allows the web app to trigger skipWaiting via
 // registration.waiting.postMessage({type: 'SKIP_WAITING'})

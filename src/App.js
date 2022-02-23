@@ -1,23 +1,31 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { skipWaiting } from 'workbox-core';
+import { askServiceWorkerSkipWaiting } from './serviceWorkerRegistration.js';
+// import './App.css';
+
+async function pushNotification() {
+  if ('Notification' in window) {
+    console.log("het werkt");
+    const permission = await Notification.requestPermission();
+    console.log(permission.toString());
+  } else {
+    console.log("geen notification mogelijk in browser");
+  }
+}
 
 function App() {
+  let notificationCounter = 0;
+  new Notification(`yeah! (${++notificationCounter})`);
+
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        <h1>VOORBEELD PWA</h1>
+        <h2>versie 4</h2>
+        <button onClick={askServiceWorkerSkipWaiting}>skip waiting</button>
+        <h2>NOTIFICATIONS API</h2>
+        <button onClick={pushNotification}>activate</button>
+        <button>stop</button>
       </header>
     </div>
   );
