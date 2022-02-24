@@ -1,32 +1,35 @@
 import React from 'react';
-import { useState } from 'react';
-import { skipWaiting } from 'workbox-core';
 import { askServiceWorkerSkipWaiting } from './serviceWorkerRegistration.js';
 // import './App.css';
 
 function App() {
-  const [seconds, setSeconds] = useState(0);
+  let notificationCounter = 0;
+  let interval;
 
-  function stopNotification(interval){
-    return clearInterval(interval);
-  }
+  // setInterval(() => {
+  //   console.log("geraakt hij hier?");
+  //   notificationCounter++;
+  //   new Notification(`yeah! (${++notificationCounter})`);
+  // }, 5000);
 
-
-  async function pushNotification() {
-    let notificationCounter = 0;
+  async function startPushNotification() {
+    const permission = await Notification.requestPermission();
 
     if ('Notification' in window) {
       console.log("het werkt");
-      const permission = await Notification.requestPermission();
-
-      const interval = setInterval(() => {
+      interval = setInterval(() => {
+        console.log("geraakt hij hier?");
         notificationCounter++;
         new Notification(`yeah! (${++notificationCounter})`);
       }, 5000);
-      // () => stopNotification(interval);
     } else {
       console.log("geen notification mogelijk in browser");
     }
+  }
+
+  function stopPushNotifications() {
+    clearInterval(interval);
+    console.log("push berichten zijn gestopt")
   }
 
   return (
@@ -36,8 +39,8 @@ function App() {
         <h2>versie 4</h2>
         <button onClick={askServiceWorkerSkipWaiting}>skip waiting</button>
         <h2>NOTIFICATIONS API</h2>
-        <button onClick={pushNotification}>activate</button>
-        <button onClick={stopNotification}>stop</button>
+        <button onClick={startPushNotification}>activate</button>
+        <button onClick={stopPushNotifications}>stop</button>
       </header>
     </div>
   );
